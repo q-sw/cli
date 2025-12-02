@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var vpnName string
+
 var vpnCmd = &cobra.Command{
 	Use:   "vpn",
 	Short: "manage VPN config",
@@ -17,7 +19,7 @@ var vpnConnect = &cobra.Command{
 	Use:   "connect",
 	Short: "Connect to VPN endpoint",
 	Run: func(cmd *cobra.Command, args []string) {
-		vpn.Connect()
+		vpn.Connect(vpnName)
 	},
 }
 
@@ -34,4 +36,5 @@ func init() {
 	vpnCmd.AddCommand(vpnConnect)
 	vpnCmd.AddCommand(vpnDisconnect)
 
+	vpnConnect.Flags().StringVarP(&vpnName, "name", "n", "", "Name of the vpn to connect to")
 }
