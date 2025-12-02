@@ -1,0 +1,37 @@
+/*
+Copyright © 2025 q-sw
+*/
+package cmd
+
+import (
+	"github.com/q-sw/cli/internal/vpn"
+	"github.com/spf13/cobra"
+)
+
+var vpnCmd = &cobra.Command{
+	Use:   "vpn",
+	Short: "manage VPN config",
+}
+
+var vpnConnect = &cobra.Command{
+	Use:   "connect",
+	Short: "Connect to VPN endpoint",
+	Run: func(cmd *cobra.Command, args []string) {
+		vpn.Connect()
+	},
+}
+
+var vpnDisconnect = &cobra.Command{
+	Use:   "disconnect",
+	Short: "Disconnect from VPN endpoint",
+	Run: func(cmd *cobra.Command, args []string) {
+		vpn.Disconnect()
+	},
+}
+
+func init() {
+	cliCmd.AddCommand(vpnCmd)
+	vpnCmd.AddCommand(vpnConnect)
+	vpnCmd.AddCommand(vpnDisconnect)
+
+}
