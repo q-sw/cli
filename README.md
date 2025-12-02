@@ -47,21 +47,75 @@ kubeconfigPath: /path/to/your/kube/configs
 vpnConfigPath: /etc/wireguard
 ```
 
-## Usage
+## Command Reference
 
-### Git
+### cli init
 
-- `cli git switch-config --name [config name]`
-- `cli git get-config`
-- `cli git status`
+Initialize the CLI configuration file.
 
-### Kubernetes
+```bash
+cli init [--path/-p <path-to-config>]
+```
 
-- `cli k8s switch-context`
+### cli git
 
-### VPN
+Manage Git configurations and repository status.
 
-- `cli vpn switch-connect`
+#### cli git switch-config
+
+Switch between different Git configurations.
+
+```bash
+cli git switch-config # Interactive selection
+```
+
+#### cli git get-config
+
+Display the current Git configuration.
+
+```bash
+cli git get-config
+```
+
+#### cli git status
+
+Show the status of Git repositories.
+
+```bash
+cli git status
+```
+
+### cli k8s
+
+Work with Kubernetes, switch contexts, etc.
+
+#### cli k8s context
+
+Switch Kubernetes context.
+
+```bash
+cli k8s context [--name/-n <context-name>]
+```
+
+### cli vpn
+
+Manage VPN connections.
+
+#### cli vpn connect
+
+Connect to a VPN endpoint.
+
+```bash
+cli vpn connect [--name/-n <vpn-name>]
+```
+
+#### cli vpn disconnect
+
+Disconnect from the active VPN endpoint.
+
+```bash
+cli vpn disconnect
+```
 
 ## Building from Source
 
