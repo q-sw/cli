@@ -92,6 +92,15 @@ func getRepoStatus(repoPath string, verbose bool) {
 			case v.Worktree == git.StatusCode('D'):
 				r := string(v.Worktree) + " " + k
 				fmt.Println(red(r))
+			case v.Worktree == git.StatusCode('R'):
+				r := string(v.Worktree) + " " + k
+				fmt.Println(yellow(r))
+			case v.Worktree == git.StatusCode('C'):
+				r := string(v.Worktree) + " " + k
+				fmt.Println(yellow(r))
+			case v.Worktree == git.StatusCode('U'):
+				r := string(v.Worktree) + " " + k
+				fmt.Println(hiRed(r))
 			case v.Worktree == git.StatusCode(' '):
 				r := string(v.Worktree) + " " + k
 				fmt.Println(blue(r))
