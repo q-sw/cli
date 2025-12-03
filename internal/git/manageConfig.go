@@ -23,8 +23,12 @@ func SwitchConfig(configName string) {
 		choice = filepath.Join(configPath, configName)
 	}
 
-	os.Remove(filepath.Join(homeDir, ".gitconfig"))
-	err := os.Symlink(choice, filepath.Join(homeDir, ".gitconfig"))
+	err := os.Remove(filepath.Join(homeDir, ".gitconfig"))
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	err = os.Symlink(choice, filepath.Join(homeDir, ".gitconfig"))
 	if err != nil {
 		log.Println("error to create symlink")
 		os.Exit(1)
