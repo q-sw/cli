@@ -2,7 +2,6 @@ package cli
 
 import (
 	"embed"
-	_ "embed"
 	"fmt"
 	"log"
 	"os"

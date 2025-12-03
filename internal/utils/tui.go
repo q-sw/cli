@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 
@@ -46,7 +47,10 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 		}
 	}
 
-	fmt.Fprint(w, fn(str))
+	_, err := fmt.Fprint(w, fn(str))
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 type model struct {
@@ -119,4 +123,3 @@ func List(items []list.Item) string {
 	}
 	return ""
 }
-

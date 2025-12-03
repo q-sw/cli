@@ -1,6 +1,5 @@
 /*
 Copyright © 2025 qsw
-
 */
 package main
 

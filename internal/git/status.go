@@ -62,7 +62,11 @@ func getRepoStatus(repoPath string, verbose bool) {
 	if status.IsClean() {
 		green := color.New(color.FgGreen)
 		boldGreen := green.Add(color.Bold)
-		boldGreen.Println("The repo is clean")
+		_, err := boldGreen.Println("The repo is clean")
+		if err != nil {
+			log.Println(err)
+		}
+
 		fmt.Println()
 	} else {
 		color.HiRed("The repo is not clean")
