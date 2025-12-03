@@ -4,6 +4,7 @@ Copyright © 2025 qsw
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -31,7 +32,11 @@ var cliInitConfig = &cobra.Command{
 	Use:   "init",
 	Short: "Init CLI config file",
 	Run: func(cmd *cobra.Command, args []string) {
-		cli.InitConfig(cliConfigFilePath)
+		statusMsg, err := cli.InitConfig(cliConfigFilePath)
+		if err != nil {
+			log.Fatalf("could not initialize config: %v", err)
+		}
+		fmt.Println(statusMsg)
 	},
 }
 
