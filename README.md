@@ -13,11 +13,15 @@ Kubernetes contexts, and VPN connections.
 
 ## Prerequisites
 
-This CLI tool relies on several external tools for its functionality. Please ensure these are installed and configured on your system before using the respective commands:
+This CLI tool relies on several external tools for its functionality.
+Please ensure these are installed and configured on your system
+before using the respective commands:
 
--   **Git Commands (`cli git`):** Requires `git` to be installed and configured.
--   **Kubernetes Commands (`cli k8s`):** Requires `kubectl` to be installed and a valid Kubernetes configuration (kubeconfig) in the path specified in `cliconfig.yaml`.
--   **VPN Commands (`cli vpn`):** Requires `WireGuard` and `wg-quick` to be installed and configured. WireGuard configuration files should be present in the path specified in `cliconfig.yaml`.
+- **Git Commands (`cli git`):** Requires `git` to be installed and configured.
+- **Kubernetes Commands (`cli k8s`):** Requires `kubectl` to be installed and
+  a valid Kubernetes configuration (kubeconfig) in the path specified in `cliconfig.yaml`.
+- **VPN Commands (`cli vpn`):** Requires `WireGuard` and `wg-quick`
+  to be installed and configured. WireGuard configuration files should be present in the path specified in `cliconfig.yaml`.
 
 ## Installation
 

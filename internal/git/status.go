@@ -120,7 +120,7 @@ func listLocalBranch(repoPath string, showBranch, showAllBranches bool) {
 	var remote []string
 	var local []string
 
-	refs.ForEach(func(r *plumbing.Reference) error {
+	err = refs.ForEach(func(r *plumbing.Reference) error {
 		if r.Name().IsRemote() {
 			b := strings.Split(string(r.Name().Short()), "/")
 			if b[1] != "HEAD" {
@@ -131,6 +131,9 @@ func listLocalBranch(repoPath string, showBranch, showAllBranches bool) {
 		}
 		return nil
 	})
+	if err != nil {
+		log.Println("error during refs.ForEach:", err)
+	}
 
 	if showAllBranches {
 		fmt.Printf("Remote: %v\n", remote)

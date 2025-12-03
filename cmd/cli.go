@@ -16,7 +16,7 @@ import (
 var cliCmd = &cobra.Command{
 	Use:   "cli",
 	Short: "QSW cli to be fast and productive",
-	Long: `CLI to be fast and productive in my 
+	Long: `CLI to be fast and productive in my
 	SRE/DevOps work. Create new project, switch between config ...`,
 }
 
