@@ -12,6 +12,16 @@ import (
 	"github.com/spf13/viper"
 )
 
+var (
+	hiRed     = color.New(color.FgHiRed).SprintFunc()
+	yellow    = color.New(color.FgYellow).SprintFunc()
+	cyan      = color.New(color.FgCyan).SprintFunc()
+	green     = color.New(color.FgGreen).SprintFunc()
+	red       = color.New(color.FgRed).SprintFunc()
+	blue      = color.New(color.FgBlue).SprintFunc()
+	boldGreen = color.New(color.FgGreen, color.Bold).SprintFunc()
+)
+
 func GetDevStatus(showChange, showBranch, showAllBranches bool) {
 	m := viper.GetString("mainPath")
 	viperToCheck := viper.Get("ToCheck")
@@ -61,16 +71,10 @@ func getRepoStatus(repoPath string, verbose bool) {
 	}
 
 	if status.IsClean() {
-		green := color.New(color.FgGreen)
-		boldGreen := green.Add(color.Bold)
-		_, err := boldGreen.Println("The repo is clean")
-		if err != nil {
-			log.Println(err)
-		}
-
+		fmt.Println(boldGreen("The repo is clean"))
 		fmt.Println()
 	} else {
-		color.HiRed("The repo is not clean")
+		fmt.Println(hiRed("The repo is not clean"))
 		fmt.Println()
 	}
 	if verbose {
@@ -78,19 +82,19 @@ func getRepoStatus(repoPath string, verbose bool) {
 			switch {
 			case v.Worktree == git.StatusCode('?'):
 				r := string(v.Worktree) + " " + k
-				color.Yellow(r)
+				fmt.Println(yellow(r))
 			case v.Worktree == git.StatusCode('M'):
 				r := string(v.Worktree) + " " + k
-				color.Cyan(r)
+				fmt.Println(cyan(r))
 			case v.Worktree == git.StatusCode('A'):
 				r := string(v.Worktree) + " " + k
-				color.Green(r)
+				fmt.Println(green(r))
 			case v.Worktree == git.StatusCode('D'):
 				r := string(v.Worktree) + " " + k
-				color.Red(r)
+				fmt.Println(red(r))
 			case v.Worktree == git.StatusCode(' '):
 				r := string(v.Worktree) + " " + k
-				color.Blue(r)
+				fmt.Println(blue(r))
 			}
 		}
 		fmt.Println()
@@ -110,7 +114,7 @@ func listLocalBranch(repoPath string, showBranch, showAllBranches bool) {
 		log.Println("error to get HEAD")
 	}
 	if showBranch {
-		color.Green(fmt.Sprintf("Attach on branch: %v\n", head.Name().String()))
+		fmt.Println(green(fmt.Sprintf("Attach on branch: %v", head.Name().String())))
 	}
 
 	refs, err := repo.References()
