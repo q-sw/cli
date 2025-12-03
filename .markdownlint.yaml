@@ -1,0 +1,8 @@
+# MD013: Line length
+# We are more permissive on line length, especially in code blocks and tables.
+default: true
+
+MD013:
+  line_length: 120
+  code_blocks: false
+  tables: false

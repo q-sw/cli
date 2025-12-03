@@ -1,0 +1,11 @@
+extends: default
+
+rules:
+  # 120 chars is a bit more permissive for YAML files
+  line-length:
+    max: 120
+    level: warning
+
+  # Required for Flux Kustomizations which often don't have a document start
+  document-start:
+    present: true
