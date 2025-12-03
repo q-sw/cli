@@ -12,7 +12,11 @@ import (
 func SwitchConfig(configName string) error {
 	configs := utils.FetchFiles("gitConfigPath")
 	configPath := viper.GetString("gitConfigPath")
-	homeDir := utils.GetHomeDir()
+
+	homeDir, err := utils.GetHomeDir()
+	if err != nil {
+		return err
+	}
 
 	var choice string
 	if configName == "" {
@@ -22,7 +26,7 @@ func SwitchConfig(configName string) error {
 		choice = filepath.Join(configPath, configName)
 	}
 
-	err := os.Remove(filepath.Join(homeDir, ".gitconfig"))
+	err = os.Remove(filepath.Join(homeDir, ".gitconfig"))
 	if err != nil {
 		log.Println(err)
 		return err
@@ -37,7 +41,11 @@ func SwitchConfig(configName string) error {
 }
 
 func GetCurrentConfig() (string, error) {
-	config, err := os.Readlink(filepath.Join(utils.GetHomeDir(), ".gitconfig"))
+	homeDir, err := utils.GetHomeDir()
+	if err != nil {
+		return "", err
+	}
+	config, err := os.Readlink(filepath.Join(homeDir, ".gitconfig"))
 	if err != nil {
 		return "", err
 	}
