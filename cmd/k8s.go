@@ -4,6 +4,9 @@ Copyright © 2025 q-sw
 package cmd
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/q-sw/cli/internal/k8s"
 	"github.com/spf13/cobra"
 )
@@ -20,7 +23,15 @@ var k8sSwitchContext = &cobra.Command{
 	Use:   "context",
 	Short: "Switch kubernetes context",
 	Run: func(cmd *cobra.Command, args []string) {
-		k8s.SwitchContext(k8sContextName)
+		chosenContext, err := k8s.SwitchContext(k8sContextName)
+		if err != nil {
+			log.Fatalf("could not switch k8s context: %v", err)
+		}
+		// If choice is empty, it means the user aborted the selection.
+		// The internal function returns a nil error in this case.
+		if chosenContext != "" {
+			fmt.Printf("Switched to Kubernetes context: %s\n", chosenContext)
+		}
 	},
 }
 
