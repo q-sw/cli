@@ -2,22 +2,23 @@ package vpn
 
 import (
 	"fmt"
-	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/q-sw/cli/internal/utils"
 	"github.com/spf13/viper"
 )
 
-func Connect(connectionName string) {
-
+func Connect(connectionName string) (string, error) {
 	var choice string
 
 	if connectionName == "" {
-		configs := utils.FetchFiles("vpnConfigPath")
+		configs, err := utils.FetchFiles("vpnConfigPath")
+		if err != nil {
+			return "", err
+		}
 		if len(configs) == 0 {
-			fmt.Println("No VPN configurations found in", viper.GetString("vpnConfigPath"))
-			return
+			return "", fmt.Errorf("no VPN configurations found in %s", viper.GetString("vpnConfigPath"))
 		}
 		choice = utils.List(configs)
 	} else {
@@ -26,7 +27,7 @@ func Connect(connectionName string) {
 
 	if choice == "" {
 		// User aborted the selection
-		return
+		return "", nil
 	}
 
 	// Ensure the choice has the .conf suffix if provided via flag
@@ -36,29 +37,23 @@ func Connect(connectionName string) {
 
 	activeVpn, err := checkConnection()
 	if err != nil {
-		fmt.Println("Error checking VPN connection:", err)
-		return
+		return "", fmt.Errorf("error checking VPN connection: %w", err)
 	}
 
 	if activeVpn != "" {
 		choiceNameWithoutExt := strings.TrimSuffix(choice, ".conf")
 		if activeVpn == choiceNameWithoutExt {
-			fmt.Printf("Already connected to %s.\n", choice)
-			return
+			return "", fmt.Errorf("already connected to %s", choice)
 		}
 
-		err := shutdown(activeVpn)
-		if err != nil {
-			fmt.Println("Error disconnecting from VPN:", err)
-			os.Exit(1)
+		if err := shutdown(activeVpn); err != nil {
+			return "", fmt.Errorf("error disconnecting from current VPN: %w", err)
 		}
 	}
 
-	fmt.Printf("Connecting to %s...\n", choice)
-	err = utils.ExecV("wg-quick", "up", viper.GetString("vpnConfigPath")+"/"+choice)
-	if err != nil {
-		fmt.Println("Error connecting to VPN:", err)
-		return
+	vpnPath := filepath.Join(viper.GetString("vpnConfigPath"), choice)
+	if err := utils.ExecV("wg-quick", "up", vpnPath); err != nil {
+		return "", fmt.Errorf("error connecting to VPN: %w", err)
 	}
-	fmt.Println("Successfully connected to", choice)
+	return choice, nil
 }

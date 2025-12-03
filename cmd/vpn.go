@@ -4,6 +4,9 @@ Copyright © 2025 q-sw
 package cmd
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/q-sw/cli/internal/vpn"
 	"github.com/spf13/cobra"
 )
@@ -19,7 +22,13 @@ var vpnConnect = &cobra.Command{
 	Use:   "connect",
 	Short: "Connect to VPN endpoint",
 	Run: func(cmd *cobra.Command, args []string) {
-		vpn.Connect(vpnName)
+		connection, err := vpn.Connect(vpnName)
+		if err != nil {
+			log.Fatalf("could not connect to VPN: %v", err)
+		}
+		if connection != "" {
+			fmt.Printf("Successfully connected to %s\n", connection)
+		}
 	},
 }
 

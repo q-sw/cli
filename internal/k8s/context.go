@@ -14,7 +14,10 @@ func SwitchContext(contextName string) (string, error) {
 	var choice string
 
 	if contextName == "" {
-		configs := utils.FetchFiles("kubeConfigPath")
+		configs, err := utils.FetchFiles("kubeConfigPath")
+		if err != nil {
+			return "", err
+		}
 		if len(configs) == 0 {
 			return "", fmt.Errorf("no Kubernetes contexts found in %s", configPath)
 		}

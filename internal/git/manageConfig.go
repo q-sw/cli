@@ -10,7 +10,10 @@ import (
 )
 
 func SwitchConfig(configName string) error {
-	configs := utils.FetchFiles("gitConfigPath")
+	configs, err := utils.FetchFiles("gitConfigPath")
+	if err != nil {
+		return err
+	}
 	configPath := viper.GetString("gitConfigPath")
 
 	homeDir, err := utils.GetHomeDir()

@@ -8,18 +8,16 @@ import (
 	"github.com/spf13/viper"
 )
 
-func FetchFiles(configPath string) []list.Item {
+func FetchFiles(configPath string) ([]list.Item, error) {
 	c := viper.GetString(configPath)
 
 	if c == "" {
-		fmt.Printf("Error: %s is not set in your config file.\n", configPath)
-		os.Exit(1)
+		return nil, fmt.Errorf("%s is not set in your config file", configPath)
 	}
 
 	configFiles, err := os.ReadDir(c)
 	if err != nil {
-		fmt.Printf("Error reading directory '%s': %v\n", c, err)
-		os.Exit(1)
+		return nil, fmt.Errorf("error reading directory '%s': %w", c, err)
 	}
 
 	var items []list.Item
@@ -27,5 +25,5 @@ func FetchFiles(configPath string) []list.Item {
 		items = append(items, ListItem(f.Name()))
 	}
 
-	return items
+	return items, nil
 }
