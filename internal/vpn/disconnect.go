@@ -1,26 +1,20 @@
 package vpn
 
-import (
-	"fmt"
-	"os"
-)
+import "fmt"
 
-func Disconnect() {
+func Disconnect() (string, error) {
 	activeVpn, err := checkConnection()
 	if err != nil {
-		fmt.Println("Error checking VPN connection:", err)
-		return
+		return "", fmt.Errorf("error checking VPN connection: %w", err)
 	}
 
-	if activeVpn != "" {
-		err := shutdown(activeVpn)
-		if err != nil {
-			fmt.Println("Error disconnecting from VPN:", err)
-			os.Exit(1)
-		}
-		fmt.Println("Successfully disconnected from", activeVpn)
+	if activeVpn == "" {
+		return "", nil
 	}
 
-	fmt.Println("No connection active detected")
+	if err := shutdown(activeVpn); err != nil {
+		return "", fmt.Errorf("error disconnecting from VPN: %w", err)
+	}
 
+	return activeVpn, nil
 }

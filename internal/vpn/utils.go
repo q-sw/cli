@@ -1,7 +1,7 @@
 package vpn
 
 import (
-	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/q-sw/cli/internal/utils"
@@ -17,8 +17,8 @@ func checkConnection() (string, error) {
 }
 
 func shutdown(connectName string) error {
-	fmt.Printf("Disconnecting from %s...\n", connectName)
-	err := utils.ExecV("wg-quick", "down", viper.GetString("vpnConfigPath")+"/"+connectName+".conf")
+	vpnPath := filepath.Join(viper.GetString("vpnConfigPath"), connectName+".conf")
+	err := utils.ExecV("wg-quick", "down", vpnPath)
 	if err != nil {
 		return err
 	}

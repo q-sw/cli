@@ -36,7 +36,15 @@ var vpnDisconnect = &cobra.Command{
 	Use:   "disconnect",
 	Short: "Disconnect from VPN endpoint",
 	Run: func(cmd *cobra.Command, args []string) {
-		vpn.Disconnect()
+		disconnectedVpn, err := vpn.Disconnect()
+		if err != nil {
+			log.Fatalf("could not disconnect from VPN: %v", err)
+		}
+		if disconnectedVpn != "" {
+			fmt.Printf("Successfully disconnected from %s\n", disconnectedVpn)
+		} else {
+			fmt.Println("No active VPN connection detected.")
+		}
 	},
 }
 
