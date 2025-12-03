@@ -4,6 +4,8 @@ Copyright © 2025 q-sw
 package cmd
 
 import (
+	"log"
+
 	"github.com/q-sw/cli/internal/git"
 	"github.com/spf13/cobra"
 )
@@ -21,7 +23,9 @@ var gitSwitch = &cobra.Command{
 	you must create gitConfig map with the key = config Name and the
 	value = config file path`,
 	Run: func(cmd *cobra.Command, args []string) {
-		git.SwitchConfig(configName)
+		if err := git.SwitchConfig(configName); err != nil {
+			log.Fatalf("could not switch git config: %v", err)
+		}
 	},
 }
 

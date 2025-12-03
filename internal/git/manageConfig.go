@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func SwitchConfig(configName string) {
+func SwitchConfig(configName string) error {
 	configs := utils.FetchFiles("gitConfigPath")
 	configPath := viper.GetString("gitConfigPath")
 	homeDir := utils.GetHomeDir()
@@ -26,14 +26,15 @@ func SwitchConfig(configName string) {
 	err := os.Remove(filepath.Join(homeDir, ".gitconfig"))
 	if err != nil {
 		log.Println(err)
-		os.Exit(1)
+		return err
 	}
 	err = os.Symlink(choice, filepath.Join(homeDir, ".gitconfig"))
 	if err != nil {
 		log.Println("error to create symlink")
-		os.Exit(1)
+		return err
 	}
 	log.Printf("%s is enabled\n", choice)
+	return nil
 }
 
 func GetCurrentConfig() {
