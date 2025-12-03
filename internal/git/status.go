@@ -30,6 +30,7 @@ func GetDevStatus(showChange, showBranch, showAllBranches bool) {
 		dir, err := os.ReadDir(path)
 		if err != nil {
 			log.Printf("error during read Directory at path %v with error: %v", path, err)
+			continue
 		}
 
 		for _, d := range dir {
