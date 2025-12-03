@@ -1,7 +1,6 @@
 package git
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -37,12 +36,12 @@ func SwitchConfig(configName string) error {
 	return nil
 }
 
-func GetCurrentConfig() {
+func GetCurrentConfig() (string, error) {
 	config, err := os.Readlink(filepath.Join(utils.GetHomeDir(), ".gitconfig"))
 	if err != nil {
-		log.Println("error to read link info")
+		return "", err
 	}
 	_, c := filepath.Split(config)
 
-	fmt.Println(c)
+	return c, nil
 }

@@ -4,6 +4,7 @@ Copyright © 2025 q-sw
 package cmd
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/q-sw/cli/internal/git"
@@ -34,7 +35,11 @@ var gitGetCurrentConfig = &cobra.Command{
 	Short: "get current config",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		git.GetCurrentConfig()
+		config, err := git.GetCurrentConfig()
+		if err != nil {
+			log.Fatalf("could not get current git config: %v", err)
+		}
+		fmt.Println(config)
 	},
 }
 
