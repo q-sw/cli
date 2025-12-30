@@ -33,6 +33,7 @@ var filesToGenerate = []fileTemplate{
 	{"pre-commit-config.yaml.tmpl", ".pre-commit-config.yaml"},
 	{"markdownlint.yaml.tmpl", ".markdownlint.yaml"},
 	{"yamllint.yaml.tmpl", ".yamllint.yaml"},
+	{"makefile.tmpl", "makefile"},
 }
 
 func ScaffoldProject(path string, data ProjectData, force bool) error {
