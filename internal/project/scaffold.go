@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
@@ -43,15 +44,18 @@ func ScaffoldProject(path string, data ProjectData, force bool) error {
 	}
 
 	// Git Init
-	// Check if repository already exists to avoid errors or re-initialization logic if not desired,
-	// though PlainInit handles idempotency by returning ErrRepositoryAlreadyExists.
-	_, err := git.PlainInit(path, false)
+	repo, err := git.PlainInit(path, false)
 	if err == git.ErrRepositoryAlreadyExists {
 		// It's okay if it already exists
 	} else if err != nil {
 		return fmt.Errorf("could not initialize git repository: %w", err)
-	} else {
-		fmt.Println("Initialized git repository")
+	} else if repo != nil {
+		// Set default branch to main
+		h := plumbing.NewSymbolicReference(plumbing.HEAD, "refs/heads/main")
+		if err := repo.Storer.SetReference(h); err != nil {
+			return fmt.Errorf("could not set default branch to main: %w", err)
+		}
+		fmt.Println("Initialized git repository with branch 'main'")
 	}
 
 	// Generate files
