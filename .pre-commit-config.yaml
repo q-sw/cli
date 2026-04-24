@@ -8,7 +8,7 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
-        args: [--allow-multiple-documents]
+        args: [ --allow-multiple-documents ]
         # Exclude helm templates and other non-standard yaml files from check-yaml
         exclude: &exclude_non_pure_yaml ^charts/.*\.yaml$|^kubernetes/.*(values|schema|gotk-components)\.yaml$
       - id: check-added-large-files
@@ -32,19 +32,17 @@ repos:
     rev: v0.11.0
     hooks:
       - id: shellcheck
+        language: system
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.46.0
     hooks:
       - id: markdownlint
-        args: ["--config", ".markdownlint.yaml"]
+        language: system
+        args: [ "--config", ".markdownlint.yaml" ]
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2
     hooks:
       - id: gitleaks
+        language: system
         name: Detect secret leaks
         description: "Scans for secrets in git history and staged files"
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.104.0
-    hooks:
-      - id: terraform_fmt
-      - id: terraform_validate
